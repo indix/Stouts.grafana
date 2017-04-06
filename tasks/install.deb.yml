@@ -19,6 +19,9 @@
   apt: name="grafana"
   when: grafana_version == "latest"
 
+- name: Create Datadir and set right permission
+  file: path="{{ grafana_data }}" state=directory owner=grafana group=grafana mode=0755
+
 # Grafana uses a defaults file to specify variables like dataDir during startup
 - name: Upload the defaults file
   template: src=grafana_default.j2 dest=/etc/default/grafana-server
