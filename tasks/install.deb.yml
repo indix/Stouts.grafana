@@ -14,11 +14,13 @@
 - name: grafana-install | Install Grafana Release
   apt: name="{{grafana_release}}"
   when: grafana_version != "latest"
-  notify:
-    - grafana restart
 
 - name: grafana-install | Install Grafana Latest
   apt: name="grafana"
   when: grafana_version == "latest"
+
+# Grafana uses a defaults file to specify variables like dataDir during startup
+- name: Upload the defaults file
+  template: src=grafana_default.j2 dest=/etc/default/grafana-server
   notify:
   - grafana restart
